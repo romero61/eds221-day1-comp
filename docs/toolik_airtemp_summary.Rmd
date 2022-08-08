@@ -1,6 +1,8 @@
 ---
 title: "Toolik Station Air Temperature"
 output: html_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -42,14 +44,21 @@ dim(toolik_weather)
 names(toolik_weather)
 ```
 
-## One awesome cleaning tool: {janitor}
+## One awesome cleaning tool: {janitor} pipe_shrtct = cmd + shift + m
 
 ...and meet the pipe operator!
 
-I don't want to deal with those capital letters. These aren't even bad looking column names, but let's clean them up a bit. 
+I don't want to deal with those capital letters. These aren't even bad looking column names, but let's clean them up a bit. Takes columns names and puts them into a 'case' you specify
+Start with this object and then (%>%) filter this input and then(%>%) select...
+
+obj %>%
+  filter()%>%
+  select()%>%
+  mutate()
 
 ```{r}
-toolik_weather <- toolik_weather %>% clean_names() # What does this do? Say it in words.
+toolik_weather <- toolik_weather %>% clean_names() # What does this do? Say it in words. |>
+
 
 # What is this %>% thing? Meet the pipe operator! Also, as of a couple months ago, |> is a native pipe operator (versus %>%, which comes along with the tidyverse)
 
@@ -68,7 +77,7 @@ Let's make a jitterplot of temperatures by month.
 ```{r}
 toolik_temp_plot <- ggplot(data = toolik_weather, aes(x = as.factor(month), y = daily_air_temp_mean_c)) +
   geom_jitter(aes(color = daily_air_temp_mean_c), show.legend = FALSE) +
-  scale_color_gradient(low = "blue", high = "orange") +
+  scale_color_gradient(low = "blue", high = "red") +
   theme_minimal() +
   labs(title = "Toolik Station daily air temperature",
        x = "Month",
